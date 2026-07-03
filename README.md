@@ -127,7 +127,7 @@ Here are 3 specific test cases you can execute in the local playground or web se
    git add .
    git commit -m "Initial commit: sprintpilot-ai ADK agent"
    git branch -M main
-   git remote add origin https://github.com/<your-username>/sprintpilot-ai.git
+   git remote add origin https://github.com/uicoder1/sprintpilot-ai.git
    git push -u origin main
 
 3. Verify .gitignore includes:
