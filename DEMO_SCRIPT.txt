@@ -1,0 +1,36 @@
+[0:00 - HOOK]
+When developers and service operations teams need real-time, context-aware information about environment status and localized system clocks, static LLMs fall short because they lack current time awareness and localized live lookups. That is why we built sprintpilot-ai—a responsive assistant designed specifically to automate real-time weather queries and timezone-aware system checks securely.
+
+[0:20 - WHAT IT IS]
+(pause)
+At its core, sprintpilot-ai is an intelligent ReAct agent implemented with the Google Agent Development Kit framework, running on top of Gemini. It operates as an extensible utility agent, wrapping custom Python functions into structured tool schemas that the model can dynamically orchestrate.
+
+[0:40 - SHOW THE BANNER]
+(show assets/cover_page_banner.png)
+As you can see on the banner, sprintpilot-ai represents a premium, secure, and intelligent approach to tool orchestration. It connects users directly to precise environmental and clock systems at a glance, wrapping it in safe, auditable telemetry controls.
+
+[1:00 - ARCHITECTURE]
+(show assets/architecture_diagram.png)
+Let us walk through the architecture of the system.
+First, the request enters the Security Checkpoint, where strict rules block sensitive data leakage by sanitizing inputs and telemetry spans.
+Next, the request hits the RootAgent, which serves as our main ReAct orchestrator and decides how to route queries.
+If the query requires weather info, the RootAgent invokes the get_weather tool, which acts as a simulated MCP tool to return weather states.
+If the query needs localized clock info, the RootAgent routes it to the get_current_time tool to compute timezone offsets.
+Finally, in developer mode, a Human ✋ approval node pauses execution to let operators inspect decisions, and all interactions are exported via OTel trace clients.
+
+[2:00 - LIVE DEMO]
+(switch to playground at localhost:18081)
+(pause)
+Let us look at a live interaction.
+If I type the query "What is the weather like in SF?" into the input box and send it, the orchestrator immediately invokes get_weather with parameter "SF". The tool returns "It's 60 degrees and foggy", which is outputted on screen.
+(pause)
+Next, let us ask "What is the current time in San Francisco?". The RootAgent calls get_current_time and resolves the query to the America/Los_Angeles timezone, outputting the exact current time.
+(pause)
+Finally, if we query "Tell me the weather in Paris", the agent routes it to get_weather, falls back to the default case, and returns "It's 90 degrees and sunny."
+
+[3:00 - SECURITY & MCP]
+(pause)
+Behind the scenes, the Security Checkpoint keeps keys safe by disabling raw content capture in telemetry spans, and the MCP tools execute safely in clean local sandboxes.
+
+[3:30 - IMPACT / CLOSE]
+By integrating sprintpilot-ai, ops teams and support staff gain tool-verified answers in seconds, drastically reducing manual checking times while keeping customer data private. Thank you for your time, and we are ready to take sprintpilot-ai live.

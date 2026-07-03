@@ -114,6 +114,12 @@ Here are 3 specific test cases you can execute in the local playground or web se
 
 ---
 
+## Demo Script
+
+A spoken presentation script with visual cues is available at [DEMO_SCRIPT.txt](file:///c:/Users/Anshu%20Gupta/Desktop/adk-workspace/sprintpilot-ai/DEMO_SCRIPT.txt) to guide you through a 3–4 minute walkthrough of the running project.
+
+---
+
 ## Push to GitHub
 
 1. Create a new repo at https://github.com/new
