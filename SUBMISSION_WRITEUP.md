@@ -1,37 +1,30 @@
 ![Cover Banner](assets/cover_page_banner.png)
 
-# SprintPilot AI: Autonomous AI Business Operations Assistant
-## Project Submission & Technical Writeup
+# Submission Writeup: SprintPilot AI
+### AI-powered Business Planning and Project Execution Assistant
 
 ---
 
-## 1. Problem Statement
-
-Startup founders, small-to-medium business owners, and product teams face significant friction when initiating new projects. The traditional pipeline from raw business concept to software execution is disjointed, slow, and labor-intensive, requiring manual coordination of:
-1. **Business Planning:** Drafting market strategies, targeting customer personas, and defining value propositions.
-2. **Requirements Scoping:** Translating high-level ideas into Software Requirement Specifications (SRS).
-3. **Agile Preparation:** Authoring complete, structured User Stories with Acceptance Criteria.
-4. **Project Roadmapping:** Scheduling timeline milestones, epics, and engineering deliverables.
-5. **Risk Mitigation:** Identifying technical, legal, security, financial, and market risks with actionable strategies.
-6. **Documentation Synthesis:** Creating READMEs, system architectures, and executive briefs for investors.
-
-Generic LLMs fail to execute this pipeline reliably without constant human steering, leading to inconsistent outputs, disjointed formats, and administrative drag.
+## 1. Project Overview
+SprintPilot AI is an intelligent AI assistant that helps entrepreneurs, startups, ecommerce businesses, and software teams transform business ideas into structured execution plans using Google Agent Development Kit (ADK), Gemini, and FastAPI. It automates operational scoping, timeline scheduling, and risk modeling, delivering verbatim business reports in a single turn.
 
 ---
 
-## 2. Why AI Agents?
-
-Unlike a basic chatbot that answers queries in a single-turn vacuum, **SprintPilot AI** utilizes an **agentic workflow**. It behaves as an autonomous planner:
-*   **Orchestration Logic:** When a high-level business concept is submitted, the orchestrator evaluates parameter completeness (Company Name, Industry, Target Customer, Budget).
-*   **Sequential Pipeline Routing:** If parameters are complete, the agent automatically coordinates the execution of seven specialized tools, passing the output of one step as the input to the next.
-*   **Persistent Context Preservation:** Remembers the core business context across the chat session, automatically reusing details for follow-up execution.
-*   **Actionable Ecosystem Access (MCP):** Connects to external execution targets (Filesystem, GitHub, Google Drive/Docs/Calendar) to deploy generated materials.
+## 2. Business Problem
+Scaffolding a new business idea is slow, fragmented, and prone to translation errors between high-level vision and engineering implementation. Founders and product managers manually draft business plans, translate them into technical specs, write user stories, schedule timeline milestones, and map risks. This creates a massive administrative bottleneck, delaying project launch.
 
 ---
 
-## 3. Architecture
+## 3. Solution
+SprintPilot AI automates the transition from business concept to technical blueprint by modeling the pipeline as an autonomous sequential workflow. 
+*   **Sequential Pipeline Chaining:** Orchestrates seven specialized business tools in a single execution turn, passing outputs as inputs downstream.
+*   **Verbatim Outputs:** Emits the complete, untruncated business execution documents directly to the client.
+*   **Pre-execution Parameter Validation:** Identifies missing details (name, sector, audience, budget) and requests them up front, saving model quota and ensuring complete context.
 
-SprintPilot AI is designed around a modular microservices-and-agent framework, ensuring separation of concerns:
+---
+
+## 4. Architecture
+The system employs a modular reasoning-and-tools structure:
 
 ```mermaid
 graph TD
@@ -46,14 +39,14 @@ graph TD
     end
     
     subgraph Sequential Business Pipeline
-        SeqWorkflow -->|1| BizPlan[generate_business_plan]
-        BizPlan -->|2| ReqGen[generate_project_requirements]
-        ReqGen -->|3| StoryGen[generate_user_stories]
-        StoryGen -->|4| RoadGen[create_project_roadmap]
-        RoadGen -->|5| RiskGen[analyze_business_risks]
-        RiskGen -->|6| DocGen[generate_documentation]
-        DocGen -->|7| ExecGen[create_executive_summary]
-        ExecGen -->|Compile Verbatim Report| Report[Final Structured Operations Report]
+        SeqWorkflow -->|1| BizPlan[Business Planning Tool]
+        BizPlan -->|2| ReqGen[Requirements Generator]
+        ReqGen -->|3| StoryGen[User Story Generator]
+        StoryGen -->|4| RoadGen[Roadmap Generator]
+        RoadGen -->|5| RiskGen[Risk Analysis]
+        RiskGen -->|6| DocGen[Documentation Generator]
+        DocGen -->|7| ExecGen[Executive Summary]
+        ExecGen -->|Compile Verbatim Report| Report[Final Business Execution Report]
     end
     
     Report -->|Directly Returned in Chat| User
@@ -63,48 +56,58 @@ graph TD
 
 ---
 
-## 4. Technical Design
-
-### A. Google Agent Development Kit (ADK)
-SprintPilot AI is built natively on the **Google ADK** framework. Under the hood:
-*   **`Agent` Abstraction:** Defines the `RootAgent` configuration, incorporating system instructions, model parameters, and external tool declarations.
-*   **`App` Engine:** Controls the lifecycle, serving the agent interface locally in dev mode or exposing the adapter routes for web deployments.
-*   **Session Database Memory:** Uses ADK's built-in session storage to manage and preserve parameters.
-
-### B. Gemini
-We leverage **Gemini 2.5 Flash Lite** for high-reasoning tasks and structured JSON schema parsing:
-*   **Parameter Extraction:** Parses raw user inputs against a Pydantic schema to identify missing variables.
-*   **Reasoning-based Roadmap Generation:** Converts unstructured functional requirements into milestone matrices using JSON declarations.
-*   **Fallback Resilience:** Implements structured fallbacks when rate limits (429s) or network disruptions are encountered.
-
-### C. FastAPI Web Adapter
-The application includes a clean integration adapter:
-*   **FastAPI Integration:** Handles incoming requests, session serialization, and server-sent event (SSE) streaming.
-*   **Standardized Types:** Exposes clean HTTP response types and status codes for API integrity.
-
-### D. Business Planning Workflow
-The core business workflow runs sequentially inside `execute_business_planning_workflow`:
-1. **`generate_business_plan`:** Formulates market placement, core value proposition, and competitor strategy.
-2. **`generate_project_requirements`:** Analyzes the plan to output a formal PRD.
-3. **`generate_user_stories`:** Converts requirements to structured Agile cards.
-4. **`create_project_roadmap`:** Plans milestones, epics, and Gantt timelines.
-5. **`analyze_business_risks`:** Flags risks with severities and mitigations.
-6. **`generate_documentation`:** Compiles standard software engineering specs.
-7. **`create_executive_summary`:** Synthesizes a strategic VC executive summary.
+## 5. Business Workflow
+1.  **User Input:** The user describes a business idea.
+2.  **Parameters Check:** The agent checks for missing details (Business Name, Industry, Target Audience, Budget).
+3.  **Business Planning Tool:** Formulates market placement and value proposition.
+4.  **Requirements Generator:** Compiles technical requirements (PRD).
+5.  **User Story Generator:** Drafts Scrum user stories with acceptance criteria.
+6.  **Roadmap Generator:** Formulates timelines, epics, priorities, and deliverables.
+7.  **Risk Analysis:** Identifies legal, technical, financial, and operational risks.
+8.  **Documentation Generator:** Compiles software requirements specifications (SRS).
+9.  **Executive Summary:** Synthesizes high-level metrics.
+10. **Final Business Execution Report:** Delivers the verbatim output in markdown formatting.
 
 ---
 
-## 5. Business Value
+## 6. AI Agent Design
 
-*   **90% Scoping Time Reduction:** Speeds up the journey from raw idea to project kickoff.
-*   **Technical Consistency:** Delivers structured, matching documentation across SRS, User Stories, and timelines.
-*   **Zero Infrastructure Drift:** The code uses standard environment-based configurations with zero hardcoded API keys.
-*   **Strict Security & Telemetry Compliance:** Captures system execution details while ensuring user content telemetry is never leaked to external logs.
+### Google ADK
+SprintPilot AI is built natively on the **Google Agent Development Kit (ADK) 2.0** framework. Under the hood:
+*   **`Agent` Wrapper:** Configures the `RootAgent` instructions, system parameters, and tool registration.
+*   **`App` Engine:** Manages lifespans, session-level memory databases, and adapter connections.
+
+### Gemini
+We leverage **Gemini 2.5 Flash Lite** for fast reasoning and structural parsing:
+*   **JSON Schema Validation:** Parses unstructured inputs against a Pydantic schema to check for parameter completeness.
+*   **Sequential Tool Reasoning:** Gemini reads inputs and outputs across tools to keep data consistent.
+
+### FastAPI
+Exposes the agent's operations as structured API routes:
+*   **SSE Streaming:** Streams log outputs and markdown characters in real-time.
+*   **Safety Handlers:** Isolates internal errors and returns standardized status codes.
+
+### Business Planning Process
+Each phase is structured as an independent python tool wrapped under `@tool`. This keeps the execution modular and allows you to test or replace single parts of the pipeline without modifying the RootAgent structure.
 
 ---
 
-## 6. Future Scope
+## 7. Technical Highlights
+*   **Daily Quota Optimization:** Switched engine to `gemini-2.5-flash-lite` to ensure high rate limit tolerances on free-tier keys.
+*   **Security & Telemetry Sanitization:** Disabled raw message content collection in telemetry trace spans (`ADK_CAPTURE_MESSAGE_CONTENT_IN_SPANS=false`) to protect user data.
+*   **Persistent Session Memory:** Dynamically preserves variables inside ADK's SQLite backend across chat turns.
 
-*   **Interactive Gantt Visuals:** Output timeline objects that can render interactive charts in the UI.
-*   **Multi-Model Verification Loop:** Use secondary LLMs to perform automated reviews on the generated requirements before compiling the final report.
-*   **Live Cloud Deployment Sync:** Integrate with Terraform and cloud providers to automatically scaffold repository environments based on the generated architecture.
+---
+
+## 8. Deployment
+The adapter server runs cleanly inside Docker containers:
+```bash
+docker build -t sprintpilot-ai .
+docker run -p 8000:8000 --env-file .env sprintpilot-ai
+```
+
+---
+
+## 9. Future Scope
+*   **Parallel Action Nodes:** Run non-dependent tools in parallel to minimize latency.
+*   **Live Cloud Deployment Sync:** Connect generated roadmap/architecture assets with terraform modules to automatically deploy the base cloud workspace.

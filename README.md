@@ -1,48 +1,48 @@
-![Cover Banner](assets/cover_page_banner.png)
-
 # SprintPilot AI 🚀
+### AI-powered Business Planning and Project Execution Assistant
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
 [![Python Version](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](#)
 [![Framework](https://img.shields.io/badge/framework-Google%20ADK-purple.svg)](#)
 [![License](https://img.shields.io/badge/license-Apache%202.0-orange.svg)](#)
 
-An Autonomous AI Business Operations Assistant built with Google Agent Development Kit (ADK), Gemini, FastAPI, and MCP-ready architecture.
+---
+
+![Cover Banner](assets/cover_page_banner.png)
 
 ---
 
 ## Project Overview
 
-SprintPilot AI is designed to transform startup brainstorming and operations planning into a fully autonomous, production-ready pipeline. Rather than acting as a step-by-step chatbot that requires constant human prompting for every operational phase, SprintPilot AI acts as an execution controller. When given a high-level business idea, the assistant validates inputs, requests missing critical details, and then sequentially runs specialized agents to generate a complete business plan, engineering PRDs, User Stories, roadmaps, risk matrices, and executive reviews—delivering a consolidated operations portfolio verbatim.
+SprintPilot AI is an intelligent AI assistant that helps entrepreneurs, startups, ecommerce businesses and software teams transform business ideas into structured execution plans using Google Agent Development Kit (ADK), Gemini and FastAPI. It replaces manual planning overhead by automatically orchestrating specialized operational tools to produce single, unified, production-ready reports directly in the user chat interface.
 
 ---
 
-## Business Problem
+## Problem Statement
 
-Developing a business concept requires months of planning, technical analysis, risk modeling, and requirements engineering. Startup founders, developers, and teams often spend significant time:
-1. Writing detailed business plans.
-2. Deriving software requirement specifications (SRS) and Agile User Stories.
-3. Modeling timelines, epics, and engineering milestones.
-4. Analyzing legal, security, financial, and technical risks.
-5. Synthesizing summaries for stakeholders.
-
-This process is slow, fragmented, and prone to communication gaps between business strategy and engineering execution.
+Transitioning a raw startup idea into an organized technical blueprint is a slow, fragmented process. Product teams and founders spend weeks manually syncing business outlines, software requirement specifications (SRS), user stories, roadmaps, risk matrices, and executive summaries. This creates a massive administrative bottleneck and leads to communication gaps between business strategy and actual engineering implementation.
 
 ---
 
 ## Solution
 
-SprintPilot AI solves this bottleneck by modeling the operations lifecycle as a sequential agentic pipeline. It automates the transition from strategy to technical execution:
-*   **Sequential Pipeline Execution:** Chains multiple domain-focused agent utilities autonomously without requiring human intervention between phases.
-*   **Verbatim Outputs:** Prints complete, untruncated deliverables directly to the user client interface.
-*   **Contextual Parameters:** Checks for and collects critical variables (name, industry, target customer, budget) up front and maintains them in persistent session memory.
-*   **MCP Operations Hub:** Connects to filesystem, GitHub, Google Drive, Docs, and Calendar to push the generated plans directly to workspace folders and cloud environments.
+SprintPilot AI bridges this gap with an autonomous pipeline. When given a high-level business concept, SprintPilot AI checks for parameter completeness (Business Name, Industry, Target Audience, Budget) and automatically runs a sequential execution loop. It orchestrates business design, requirements engineering, timeline Scheduling, and risk mitigation tools to return a single, structured, verbatim Operations and Execution Report.
 
 ---
 
-## Architecture Diagram
+## Key Features
 
-The workflow below displays how SprintPilot AI routes incoming ideas, orchestrates specialized logic nodes, and synchronizes memory and MCP outputs:
+*   **Autonomous Chaining:** Automatically executes planning, roadmap, risk, and summary tools sequentially in one turn.
+*   **Stateful Memory Preservation:** Recalls project names, target sectors, and previous timelines across sessions.
+*   **Verbatim Document Outputs:** Outputs full generated reports directly to the user client interface without abbreviation or truncation.
+*   **Extensible Model Context Protocol (MCP):** Connects natively with Filesystem, GitHub, Google Drive, Docs, and Calendar to deploy planning outputs.
+*   **Live Visual Log Status:** Visualizes pipeline step execution using emojis in the logs.
+
+---
+
+## Architecture Overview
+
+The system diagram below displays how user inputs route to the backend, run the sequential agent graph, and interface with memory and MCP services:
 
 ```mermaid
 graph TD
@@ -57,14 +57,14 @@ graph TD
     end
     
     subgraph Sequential Business Pipeline
-        SeqWorkflow -->|1| BizPlan[generate_business_plan]
-        BizPlan -->|2| ReqGen[generate_project_requirements]
-        ReqGen -->|3| StoryGen[generate_user_stories]
-        StoryGen -->|4| RoadGen[create_project_roadmap]
-        RoadGen -->|5| RiskGen[analyze_business_risks]
-        RiskGen -->|6| DocGen[generate_documentation]
-        DocGen -->|7| ExecGen[create_executive_summary]
-        ExecGen -->|Compile Verbatim Report| Report[Final Structured Operations Report]
+        SeqWorkflow -->|1| BizPlan[Business Planning Tool]
+        BizPlan -->|2| ReqGen[Requirements Generator]
+        ReqGen -->|3| StoryGen[User Story Generator]
+        StoryGen -->|4| RoadGen[Roadmap Generator]
+        RoadGen -->|5| RiskGen[Risk Analysis]
+        RiskGen -->|6| DocGen[Documentation Generator]
+        DocGen -->|7| ExecGen[Executive Summary]
+        ExecGen -->|Compile Verbatim Report| Report[Final Business Execution Report]
     end
     
     Report -->|Directly Returned in Chat| User
@@ -74,26 +74,42 @@ graph TD
 
 ---
 
-## Features
+## Business Workflow
 
-*   **Autonomous Operation:** Automatically runs the entire business operations pipeline. No user commands needed for intermediate steps.
-*   **Stateful Memory Preservation:** Recalls project names, target sectors, and previous timelines across user sessions.
-*   **Model Context Protocol (MCP):**
-    *   **Filesystem:** Reads/writes local workspace assets.
-    *   **GitHub:** Instantly posts issues and roadmaps.
-    *   **Google Drive/Docs:** Uploads generated reports to cloud files.
-    *   **Google Calendar:** Pins milestones directly to project calendars.
-*   **Live Visual Log Status:** Visualizes pipeline progress using terminal emojis.
+The sequential execution workflow follows these precise stages:
+1.  **User Input:** Submits business concept in raw text.
+2.  **SprintPilot Root Agent:** Checks parameters. If details are missing, prompts user.
+3.  **Business Planning Tool:** Formulates market placement and value proposition.
+4.  **Requirements Generator:** Generates technical requirements (PRD).
+5.  **User Story Generator:** Drafts Scrum user stories with acceptance criteria.
+6.  **Roadmap Generator:** Formulates timeline, epics, priorities, and deliverables.
+7.  **Risk Analysis:** Identifies legal, technical, financial, and operational risks.
+8.  **Documentation Generator:** Compiles technical references and code structure outlines.
+9.  **Executive Summary:** Synthesizes high-level metrics for investors and stakeholders.
+10. **Final Business Execution Report:** Delivers the verbatim output in markdown formatting.
 
 ---
 
-## Tech Stack
+## AI Business Tools
 
-*   **Core Logic:** Google Agent Development Kit (ADK) 2.0
-*   **Generative AI:** Gemini 2.5 Flash Lite (optimized for fast reasoning and robust free-tier caps)
-*   **Web Framework:** FastAPI, Uvicorn
-*   **Environment & Dependency Management:** uv
-*   **Validation:** Pydantic v2
+*   `generate_business_plan`: Formulates value propositions and market segments.
+*   `generate_project_requirements`: Formulates full engineering specifications.
+*   `generate_user_stories`: Drafts Scrum stories with target objectives.
+*   `create_project_roadmap`: Determines phased timeline charts and priorities.
+*   `analyze_business_risks`: Evaluates compliance and severities.
+*   `generate_documentation`: Compiles system architectures and READMEs.
+*   `create_executive_summary`: Synthesizes investor briefs.
+*   `execute_business_planning_workflow`: Core controller tool that runs the pipeline.
+
+---
+
+## Technology Stack
+
+*   **Logic Framework:** Google Agent Development Kit (ADK) 2.0
+*   **AI Engine:** Gemini 2.5 Flash Lite (optimized for speed and free-tier request limits)
+*   **Server Backend:** FastAPI, Uvicorn
+*   **Environment & Package Manager:** uv
+*   **Data Validation:** Pydantic v2
 
 ---
 
@@ -103,22 +119,22 @@ graph TD
 sprintpilot-ai/
 ├── app/
 │   ├── app_utils/
-│   │   ├── mcp_client.py                 # MCP Server Client Manager
-│   │   ├── reasoning_engine_adapter.py    # FastAPI web adapter
-│   │   └── telemetry.py                  # Telemetry builder
+│   │   ├── mcp_client.py                 # MCP client manager
+│   │   ├── reasoning_engine_adapter.py    # FastAPI server interface
+│   │   └── telemetry.py                  # Telemetry configuration
 │   ├── tools/
 │   │   ├── __init__.py                   # Tools package exposure
-│   │   ├── business_plan.py              # Business plan generator
-│   │   ├── business_risks.py             # Risk matrices assessment
-│   │   ├── documentation.py              # Markdown document compiler
+│   │   ├── business_plan.py              # Business planning logic
+│   │   ├── business_risks.py             # Risk analysis tool
+│   │   ├── documentation.py              # Documentation compiler
 │   │   ├── executive_summary.py          # Executive VC synthesis
 │   │   ├── orchestrator_workflow.py      # Core sequential pipeline runner
-│   │   ├── project_requirements.py       # Engineering requirement extractor
-│   │   ├── project_roadmap.py            # Epic & milestone scheduler
-│   │   └── user_stories.py               # Agile user story builder
-│   ├── agent.py                          # RootAgent configuration
+│   │   ├── project_requirements.py       # Requirements specification extractor
+│   │   ├── project_roadmap.py            # Epic timeline scheduler
+│   │   └── user_stories.py               # Scrum story card generator
+│   ├── agent.py                          # RootAgent definitions
 │   ├── config.py                         # Environment variables mapping
-│   └── main.py                           # FastAPI application entrypoint
+│   └── main.py                           # FastAPI entrypoint
 ├── assets/
 │   ├── architecture_diagram.png          # System architecture visualizer
 │   └── cover_page_banner.png             # Project title banner
@@ -133,50 +149,88 @@ sprintpilot-ai/
 
 ## Installation & Running Locally
 
-Ensure you have **Python 3.11+** and **uv** installed.
+1.  **Clone Repository:**
+    ```bash
+    git clone https://github.com/uicoder1/sprintpilot-ai.git
+    cd sprintpilot-ai
+    ```
+2.  **Set Up Local Env:**
+    Copy `.env.example` to `.env` and fill in your keys:
+    ```env
+    GOOGLE_API_KEY=your_gemini_api_key_here
+    GEMINI_API_KEY=your_gemini_api_key_here
+    GEMINI_MODEL=gemini-2.5-flash-lite
+    ```
+3.  **Install dependencies:**
+    ```bash
+    make install
+    ```
+4.  **Run Playground Server:**
+    ```bash
+    make playground
+    ```
+    Access the playground interface at: [http://localhost:18081/dev-ui/?app=app](http://localhost:18081/dev-ui/?app=app)
 
-```bash
-# 1. Clone the project
-git clone https://github.com/uicoder1/sprintpilot-ai.git
-cd sprintpilot-ai
+---
 
-# 2. Set up environment variables
-cp .env.example .env
-# Edit .env and configure your GOOGLE_API_KEY / GEMINI_API_KEY
+## Example Prompt
 
-# 3. Install packages and set up virtual environment
-make install
-
-# 4. Launch local playground interface
-make playground
-# Open http://localhost:18081/dev-ui/?app=app in your browser
+```text
+I want to build a software consultancy startup named DevSprint in the SaaS industry. Our target audience is enterprise software buyers, and our initial budget is $50,000.
 ```
 
 ---
 
-## Deployment
+## Example Output
 
-SprintPilot AI is fully compatible with production-grade containers.
+```markdown
+# SPRINT PILOT OPERATIONS REPORT: DEVSPRINT
+**Industry Sector:** SaaS
+**Target Audience:** Enterprise software buyers
+**Initial Budget/Funding:** $50,000
 
-1. **Build Docker Image:**
-   ```bash
-   docker build -t sprintpilot-ai .
-   ```
-2. **Run Container:**
-   ```bash
-   docker run -p 8000:8000 --env-file .env sprintpilot-ai
-   ```
+---
+
+## Executive Summary
+This document synthesizes the operational design and engineering rollout schedule for DevSprint, a specialized SaaS software consultancy targeting enterprise software buyers.
+
+---
+
+## Business Plan
+*   **Value Proposition:** Enterprise-grade cloud consulting and custom SaaS integrations.
+*   **Market Strategy:** Targeted outreach to mid-market CTOs needing technical acceleration.
+
+---
+
+## Project Roadmap & Timeline
+*   **Phase 1 (Week 1-2):** Launch core website and outreach pipeline.
+*   **Phase 2 (Week 3-4):** Scaffold template catalog and client onboarding systems.
+```
+
+---
+
+## Screenshots Section
+
+*Below are placeholding spaces representing current developer playground execution traces of SprintPilot AI:*
+
+### 1. Developer Playground Main Session
+*(Placeholder: Developer Interface showing prompt input and conversation workspace)*
+
+### 2. Sequential Orchestration Logs
+*(Placeholder: Console logger panel showing step-by-step emoji progress indicators)*
+
+### 3. Generated Operations Report Output
+*(Placeholder: Complete verbatim markdown Business Execution Report returned in chat)*
 
 ---
 
 ## Future Improvements
 
-*   **Parallel Execution Nodes:** Optimize execution speed by running non-dependent steps (like Risk Analysis and Roadmap scheduling) in parallel.
-*   **External Database Sync:** Support PostgreSQL/Redis integrations to maintain session context indefinitely for massive teams.
-*   **Custom Templates:** Allow teams to upload their own layout templates for PRDs and roadmaps.
+*   **Asynchronous Parallel Routing:** Speed up execution by running risk evaluations and roadmapping tools concurrently.
+*   **Interactive Timeline Renderers:** Render the timeline deliverables as interactive Gantt charts inside the web adapter client.
 
 ---
 
 ## License
 
-This project is licensed under the Apache 2.0 License. See the LICENSE file for details.
+This project is licensed under the Apache 2.0 License.
