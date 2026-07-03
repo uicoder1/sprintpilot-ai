@@ -2,7 +2,7 @@
 
 # sprintpilot-ai
 
-A clean, responsive ReAct agent powered by the Google Agent Development Kit (ADK) that simulates real-time weather querying and timezone-aware clock services.
+An autonomous business operations assistant powered by the Google Agent Development Kit (ADK) that helps startup founders, ecommerce businesses, and software teams plan, organize, and execute their projects.
 
 ## Prerequisites
 
@@ -46,8 +46,12 @@ graph TD
     end
     
     subgraph Agent Tools
-        Agent -->|Tool Execution| Weather[get_weather Tool]
-        Agent -->|Tool Execution| Time[get_current_time Tool]
+        Agent -->|Tool Execution| BizPlan[generate_business_plan]
+        Agent -->|Tool Execution| PRD[generate_project_requirements]
+        Agent -->|Tool Execution| Stories[generate_user_stories]
+        Agent -->|Tool Execution| Roadmap[create_project_roadmap]
+        Agent -->|Tool Execution| Doc[generate_documentation]
+        Agent -->|Tool Execution| Risk[analyze_business_risks]
     end
     
     subgraph Observability
@@ -71,20 +75,20 @@ You can run the project in two different modes:
 
 Here are 3 specific test cases you can execute in the local playground or web server:
 
-### 1. Simulated Weather Query for San Francisco
-*   **Input:** `"What is the weather like in SF?"`
-*   **Expected Behavior:** The `RootAgent` parses the request, invokes the `get_weather` tool with the parameter `query="SF"`, receives `"It's 60 degrees and foggy."`, and presents it back to the user.
-*   **Check:** In the playground UI, you will see a tool call block for `get_weather` with the input `"SF"`. The final response will state that the weather is 60 degrees and foggy.
+### 1. Generating a Business Plan Outline
+*   **Input:** `"Can you generate a business plan for Acme Corp in the SaaS industry targeting developers?"`
+*   **Expected Behavior:** The `RootAgent` parses the request, invokes the `generate_business_plan` tool with the parameters `company_name="Acme Corp"`, `industry="SaaS"`, and `target_audience="developers"`, receives a structured business plan template, and returns it.
+*   **Check:** In the playground UI, you will see a tool call block for `generate_business_plan`. The final response will show the generated markdown business plan.
 
-### 2. Timezone-Aware Current Time for San Francisco
-*   **Input:** `"What is the current time in San Francisco?"`
-*   **Expected Behavior:** The `RootAgent` invokes the `get_current_time` tool with the parameter `query="San Francisco"`. The tool translates the query to the `"America/Los_Angeles"` timezone, retrieves the system time, and formats it.
-*   **Check:** The UI displays the tool call logs for `get_current_time`. The final response will present the exact current timezone-formatted time (e.g. `2026-07-03 16:40:00 PDT-0700`).
+### 2. Creating a Project Roadmap
+*   **Input:** `"Create a 6-week project roadmap for my e-commerce storefront project."`
+*   **Expected Behavior:** The `RootAgent` invokes the `create_project_roadmap` tool with parameters `project_name="e-commerce storefront"` and `duration_weeks=6`. The tool computes phase timelines and returns the roadmap.
+*   **Check:** The UI displays the tool call logs for `create_project_roadmap` and shows a structured 6-week timeline with phases.
 
-### 3. Weather Query Fallback (Generic City)
-*   **Input:** `"Tell me the weather in Paris"`
-*   **Expected Behavior:** The `RootAgent` routes the request to the `get_weather` tool with `query="Paris"`. The tool falls back to the default case and returns `"It's 90 degrees and sunny."`.
-*   **Check:** The user sees the fallback tool output and the final response from the agent stating it is 90 degrees and sunny in Paris.
+### 3. Business Risk Analysis
+*   **Input:** `"Analyze business risks for Stripe in the payments space."`
+*   **Expected Behavior:** The `RootAgent` routes the request to the `analyze_business_risks` tool with `company_name="Stripe"` and `industry="payments"`. The tool returns a risk analysis report with mitigations.
+*   **Check:** The user sees the generated risk report listing market, operational, and compliance risks for Stripe.
 
 ---
 

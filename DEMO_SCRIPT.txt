@@ -1,36 +1,36 @@
 [0:00 - HOOK]
-When developers and service operations teams need real-time, context-aware information about environment status and localized system clocks, static LLMs fall short because they lack current time awareness and localized live lookups. That is why we built sprintpilot-ai—a responsive assistant designed specifically to automate real-time weather queries and timezone-aware system checks securely.
+When startup founders, ecommerce businesses, and software teams need to quickly plan and organize projects, manually drafting business plans, requirement sheets, and roadmaps creates massive administrative bottlenecks. That is why we built SprintPilot AI—an Autonomous Business Operations Assistant designed to automate and accelerate project planning, requirements mapping, and risk analysis.
 
 [0:20 - WHAT IT IS]
 (pause)
-At its core, sprintpilot-ai is an intelligent ReAct agent implemented with the Google Agent Development Kit framework, running on top of Gemini. It operates as an extensible utility agent, wrapping custom Python functions into structured tool schemas that the model can dynamically orchestrate.
+At its core, SprintPilot AI is an intelligent operations agent implemented with the Google Agent Development Kit framework, running on top of Gemini. It operates as a modular assistant that exposes six specialized business tools to dynamically outline plans, user stories, roadmaps, and technical documentation.
 
 [0:40 - SHOW THE BANNER]
 (show assets/cover_page_banner.png)
-As you can see on the banner, sprintpilot-ai represents a premium, secure, and intelligent approach to tool orchestration. It connects users directly to precise environmental and clock systems at a glance, wrapping it in safe, auditable telemetry controls.
+Looking at the cover banner, SprintPilot AI emphasizes automated, secure, and intelligent project scaffolding. It helps teams align requirements, visualize timelines, and identify business risks instantly inside a secure execution environment.
 
 [1:00 - ARCHITECTURE]
 (show assets/architecture_diagram.png)
 Let us walk through the architecture of the system.
-First, the request enters the Security Checkpoint, where strict rules block sensitive data leakage by sanitizing inputs and telemetry spans.
-Next, the request hits the RootAgent, which serves as our main ReAct orchestrator and decides how to route queries.
-If the query requires weather info, the RootAgent invokes the get_weather tool, which acts as a simulated MCP tool to return weather states.
-If the query needs localized clock info, the RootAgent routes it to the get_current_time tool to compute timezone offsets.
-Finally, in developer mode, a Human ✋ approval node pauses execution to let operators inspect decisions, and all interactions are exported via OTel trace clients.
+First, user inputs go through the Security Checkpoint to sanitize parameter boundaries and prevent raw text exports in telemetry.
+Next, requests hit SprintPilot AI's RootAgent, which orchestrates six business operations tools.
+Depending on the goal, the RootAgent can trigger generate_business_plan to output market strategies, generate_project_requirements to compile product specs, or generate_user_stories to draft Agile user cases.
+It also uses create_project_roadmap to phase deliverables, generate_documentation to document codebase elements, and analyze_business_risks to evaluate industry compliance.
+Finally, execution traces are securely sent to Cloud Logging via OpenTelemetry collectors.
 
 [2:00 - LIVE DEMO]
 (switch to playground at localhost:18081)
 (pause)
-Let us look at a live interaction.
-If I type the query "What is the weather like in SF?" into the input box and send it, the orchestrator immediately invokes get_weather with parameter "SF". The tool returns "It's 60 degrees and foggy", which is outputted on screen.
+Let us review a live interaction in the developer playground.
+If I submit the query "Can you generate a business plan for Acme Corp in the SaaS industry targeting developers?", the agent invokes the generate_business_plan tool, displaying a complete 5-part outline containing an Executive Summary, Market Analysis, and product roadmap milestones on screen.
 (pause)
-Next, let us ask "What is the current time in San Francisco?". The RootAgent calls get_current_time and resolves the query to the America/Los_Angeles timezone, outputting the exact current time.
+Next, let us ask "Create a 6-week project roadmap for my e-commerce storefront project." SprintPilot AI executes create_project_roadmap, outputting a clear, phased weekly schedule from initial setup to production release.
 (pause)
-Finally, if we query "Tell me the weather in Paris", the agent routes it to get_weather, falls back to the default case, and returns "It's 90 degrees and sunny."
+Finally, if we request "Analyze business risks for Stripe in the payments space," the agent calls analyze_business_risks to identify market, operational, and telemetry leakage hazards along with custom mitigation strategies.
 
 [3:00 - SECURITY & MCP]
 (pause)
-Behind the scenes, the Security Checkpoint keeps keys safe by disabling raw content capture in telemetry spans, and the MCP tools execute safely in clean local sandboxes.
+Behind the scenes, security checkpoints sanitize input parameters and prevent telemetry data leaks, while each tool runs inside a clean local sandbox.
 
 [3:30 - IMPACT / CLOSE]
-By integrating sprintpilot-ai, ops teams and support staff gain tool-verified answers in seconds, drastically reducing manual checking times while keeping customer data private. Thank you for your time, and we are ready to take sprintpilot-ai live.
+SprintPilot AI enables modern product teams to save hours of administrative overhead, ensuring consistent requirements and clean codebases while protecting customer privacy. Thank you, and we are ready to scale business operations with SprintPilot AI.

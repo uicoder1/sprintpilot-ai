@@ -23,37 +23,182 @@ from google.adk.models import Gemini
 from google.genai import types
 
 
-def get_weather(query: str) -> str:
-    """Simulates a web search. Use it get information on weather.
+def generate_business_plan(company_name: str, industry: str, target_audience: str) -> str:
+    """Generates a structured business plan outline for a startup or business.
 
     Args:
-        query: A string containing the location to get weather information for.
+        company_name: The name of the company/startup.
+        industry: The industry the business operates in.
+        target_audience: The main target customer segment.
 
     Returns:
-        A string with the simulated weather information for the queried location.
+        A markdown-formatted string containing the structured business plan outline.
     """
-    if "sf" in query.lower() or "san francisco" in query.lower():
-        return "It's 60 degrees and foggy."
-    return "It's 90 degrees and sunny."
+    return f"""# Business Plan: {company_name}
+**Industry:** {industry}
+**Target Audience:** {target_audience}
+
+## 1. Executive Summary
+A summary of {company_name}'s mission, core value proposition, and growth goals in the {industry} space.
+
+## 2. Market Analysis
+Analysis of market trends in {industry} and how {company_name} serves the target demographic of {target_audience}.
+
+## 3. Product & Services
+Details of the core offerings, key features, and product-market fit.
+
+## 4. Marketing & Sales Strategy
+Channels to reach {target_audience} and convert leads.
+
+## 5. Operations & Financial Projections
+Key milestones, team structure, and mock 3-year financial projections.
+"""
 
 
-def get_current_time(query: str) -> str:
-    """Simulates getting the current time for a city.
+def generate_project_requirements(project_title: str, description: str, key_features: list[str]) -> str:
+    """Generates a Product Requirement Document (PRD) for a project or feature.
 
     Args:
-        city: The name of the city to get the current time for.
+        project_title: The name of the project or product.
+        description: A brief description of the project.
+        key_features: A list of key features to be implemented.
 
     Returns:
-        A string with the current time information.
+        A markdown-formatted Product Requirement Document (PRD).
     """
-    if "sf" in query.lower() or "san francisco" in query.lower():
-        tz_identifier = "America/Los_Angeles"
-    else:
-        return f"Sorry, I don't have timezone information for query: {query}."
+    features_list = "\n".join([f"- **{feature}**: Requirement definition and implementation constraints." for feature in key_features])
+    return f"""# Product Requirement Document (PRD): {project_title}
 
-    tz = ZoneInfo(tz_identifier)
-    now = datetime.datetime.now(tz)
-    return f"The current time for query {query} is {now.strftime('%Y-%m-%d %H:%M:%S %Z%z')}"
+## 1. Objective & Scope
+**Description:** {description}
+
+## 2. Key Functional Requirements
+{features_list}
+
+## 3. Non-Functional Requirements
+- **Performance:** System must load within 2 seconds.
+- **Security:** Data-at-rest and data-in-transit encryption.
+
+## 4. Success Metrics
+- 100% test coverage on critical routes.
+- User adoption metrics tracking.
+"""
+
+
+def generate_user_stories(feature_name: str, goal: str) -> str:
+    """Generates Agile user stories with acceptance criteria for a given feature.
+
+    Args:
+        feature_name: The name of the feature or epic.
+        goal: The user objective or business goal of the feature.
+
+    Returns:
+        A formatted string listing the user stories and their acceptance criteria.
+    """
+    return f"""# Agile User Stories for: {feature_name}
+**Feature Goal:** {goal}
+
+## User Story 1
+**As a** User
+**I want to** use the {feature_name} functionality
+**So that** I can achieve the following goal: {goal}
+
+### Acceptance Criteria:
+1. User can successfully access the {feature_name} component.
+2. The system processes the input and aligns with the target goal.
+3. Errors are handled gracefully with user-friendly alerts.
+
+## User Story 2 (Admin flow)
+**As an** Administrator
+**I want to** monitor the performance of {feature_name}
+**So that** I can ensure system health and compliance.
+
+### Acceptance Criteria:
+1. Admin dashboard shows usage statistics of the {feature_name} feature.
+2. Audit logs capture tool executions.
+"""
+
+
+def create_project_roadmap(project_name: str, duration_weeks: int = 4) -> str:
+    """Creates a phased timeline and roadmap for a project.
+
+    Args:
+        project_name: The name of the project.
+        duration_weeks: The planned project duration in weeks (default: 4).
+
+    Returns:
+        A timeline breakdown of project milestones.
+    """
+    phase1_end = max(1, duration_weeks // 4)
+    phase2_end = max(phase1_end + 1, (duration_weeks * 3) // 4)
+    
+    return f"""# Project Roadmap: {project_name}
+**Total Duration:** {duration_weeks} Weeks
+
+## Phase 1: Planning & Setup (Weeks 1-{phase1_end})
+- Finalize requirements and system architecture.
+- Scaffold repository and initial infrastructure pipelines.
+
+## Phase 2: Core Development & Integration (Weeks {phase1_end + 1}-{phase2_end})
+- Implement main application modules and tool integrations.
+- Set up automated testing and validation runs.
+
+## Phase 3: Testing & Launch (Weeks {phase2_end + 1}-{duration_weeks})
+- Conduct comprehensive end-to-end integration and load testing.
+- Human-in-the-loop validation and production deployment.
+"""
+
+
+def generate_documentation(module_name: str, code_snippet: str) -> str:
+    """Generates markdown technical documentation for a codebase module or snippet.
+
+    Args:
+        module_name: The name of the module or component.
+        code_snippet: The actual code structure or signature to document.
+
+    Returns:
+        A markdown technical reference sheet.
+    """
+    return f"""# Technical Documentation: {module_name}
+
+## Overview
+This document describes the API and structural design of the `{module_name}` module.
+
+## Implementation Snippet
+```python
+{code_snippet}
+```
+
+## Description
+The `{module_name}` module exposes interfaces to coordinate core logic. It has been validated through integration tests and adheres to the project's standard structure.
+"""
+
+
+def analyze_business_risks(company_name: str, industry: str) -> str:
+    """Identifies and evaluates business, operational, and market risks with mitigations.
+
+    Args:
+        company_name: The name of the company.
+        industry: The industry domain.
+
+    Returns:
+        A risk analysis report with mitigation strategies.
+    """
+    return f"""# Business Risk Analysis: {company_name}
+**Industry Sector:** {industry}
+
+## 1. Market & Competitive Risk
+*   **Risk:** Rapid evolution of tech standards in the {industry} sector might render the current business model obsolete.
+*   **Mitigation:** Actively iterate on features using agile workflows and gather direct user feedback.
+
+## 2. Operational Risk
+*   **Risk:** Service downtime or API limits (e.g. rate limits) blocking operations.
+*   **Mitigation:** Set up robust exception handling, fallbacks, and retry options in agent workflows.
+
+## 3. Compliance & Regulatory Risk
+*   **Risk:** PII leakage in telemetry traces.
+*   **Mitigation:** Verify telemetry spans do not capture raw message payloads and follow data privacy compliance standards.
+"""
 
 
 root_agent = Agent(
@@ -62,8 +207,23 @@ root_agent = Agent(
         model=app.config.config.model,
         retry_options=types.HttpRetryOptions(attempts=3),
     ),
-    instruction="You are a helpful AI assistant designed to provide accurate and useful information.",
-    tools=[get_weather, get_current_time],
+    instruction=(
+        "You are SprintPilot AI, an Autonomous Business Operations Assistant designed to "
+        "help startup founders, ecommerce businesses, and software teams plan, organize, "
+        "and execute their projects. You are equipped with specialized tools to generate "
+        "business plans, list functional requirements, compile user stories, design project "
+        "roadmaps, write technical documentation, and perform business risk analysis. "
+        "Ensure you leverage these tools whenever appropriate to provide highly structured, "
+        "valuable, and action-oriented documentation."
+    ),
+    tools=[
+        generate_business_plan,
+        generate_project_requirements,
+        generate_user_stories,
+        create_project_roadmap,
+        generate_documentation,
+        analyze_business_risks,
+    ],
 )
 
 app = App(

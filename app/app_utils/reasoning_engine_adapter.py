@@ -26,7 +26,7 @@ import inspect
 import json
 
 from fastapi import FastAPI, HTTPException, Request, encoders
-from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from vertexai.agent_engines.templates.adk import AdkApp
 
 from app.app_utils import services

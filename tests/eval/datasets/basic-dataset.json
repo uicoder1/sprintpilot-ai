@@ -8,23 +8,17 @@
       }
     },
     {
-      "eval_case_id": "weather_query",
+      "eval_case_id": "business_plan",
       "prompt": {
         "role": "user",
-        "parts": [{"text": "What's the weather like in San Francisco?"}]
+        "parts": [{"text": "Can you generate a business plan for Acme Corp in the SaaS industry targeting developers?"}]
       }
     },
     {
-      "eval_case_id": "capital_lookup",
+      "eval_case_id": "project_roadmap",
       "prompt": {
         "role": "user",
-        "parts": [{"text": "What is the capital of France?"}]
-      },
-      "reference": {
-        "response": {
-          "role": "model",
-          "parts": [{"text": "The capital of France is Paris."}]
-        }
+        "parts": [{"text": "Create a 6-week project roadmap for my e-commerce storefront project."}]
       }
     }
   ]

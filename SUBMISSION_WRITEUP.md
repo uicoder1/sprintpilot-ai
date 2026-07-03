@@ -3,7 +3,7 @@
 # Submission Writeup: sprintpilot-ai
 
 ## Problem Statement
-In real-world operations, users require immediate, localized, and context-aware responses regarding weather details and current time zones. Standard LLMs often struggle with real-time temporal and environmental accuracy (e.g. knowing the exact local time and current weather state). `sprintpilot-ai` addresses this need by utilizing a ReAct architecture that seamlessly integrates simulated real-time lookups for weather conditions and timezone-accurate clocks.
+Startup founders, ecommerce businesses, and software development teams need automated assistance to organize projects, author roadmaps, list functional requirements, compile user stories, and evaluate risks. General-purpose LLMs struggle to generate structured, consistent operations templates without dedicated business context and domain-specific routing. `sprintpilot-ai` addresses this need by utilizing a ReAct architecture that integrates modular operations tools directly into the agent reasoning loop.
 
 ---
 
@@ -23,8 +23,12 @@ graph TD
     end
     
     subgraph Agent Tools
-        Agent -->|Tool Execution| Weather[get_weather Tool]
-        Agent -->|Tool Execution| Time[get_current_time Tool]
+        Agent -->|Tool Execution| BizPlan[generate_business_plan]
+        Agent -->|Tool Execution| PRD[generate_project_requirements]
+        Agent -->|Tool Execution| Stories[generate_user_stories]
+        Agent -->|Tool Execution| Roadmap[create_project_roadmap]
+        Agent -->|Tool Execution| Doc[generate_documentation]
+        Agent -->|Tool Execution| Risk[analyze_business_risks]
     end
     
     subgraph Observability
@@ -50,7 +54,7 @@ graph TD
 
 ### 3. AgentTool (Function Tools)
 *   **Concept:** Exposing Python helper functions to LLMs as tool call definitions.
-*   **File Reference:** [agent.py](file:///c:/Users/Anshu%20Gupta/Desktop/adk-workspace/sprintpilot-ai/app/agent.py#L26) (`get_weather`) and [agent.py](file:///c:/Users/Anshu%20Gupta/Desktop/adk-workspace/sprintpilot-ai/app/agent.py#L40) (`get_current_time`)
+*   **File Reference:** [agent.py](file:///c:/Users/Anshu%20Gupta/Desktop/adk-workspace/sprintpilot-ai/app/agent.py#L26) (`generate_business_plan`, `generate_project_requirements`, `generate_user_stories`, `create_project_roadmap`, `generate_documentation`, `analyze_business_risks`)
 *   **Details:** Normal Python functions with descriptive docstrings are converted to LLM-callable tool declarations under the hood by ADK.
 
 ### 4. Telemetry and Tracing
@@ -63,16 +67,20 @@ graph TD
 ## Security Design
 
 1.  **Strict Telemetry Sanitization:** The flag `ADK_CAPTURE_MESSAGE_CONTENT_IN_SPANS` is set to `"false"` in [telemetry.py](file:///c:/Users/Anshu%20Gupta/Desktop/adk-workspace/sprintpilot-ai/app/app_utils/telemetry.py#L22). This ensures that user prompt contents and sensitive messages are never exported to Cloud Trace spans.
-2.  **Input Parameter Sanitization:** The `get_current_time` function limits input resolving to standard `ZoneInfo` schemas. Any invalid timezone name falls back to a warning response, preventing system level vulnerabilities or file path traversal when looking up timezone zones.
+2.  **Input Parameter Sanitization:** The business tools sanitize parameter inputs (e.g. limiting durations to positive integers in `create_project_roadmap` and stripping potentially unsafe code injections or malformed text snippets from `generate_documentation`).
 3.  **Encapsulated Exceptions:** In [reasoning_engine_adapter.py](file:///c:/Users/Anshu%20Gupta/Desktop/adk-workspace/sprintpilot-ai/app/app_utils/reasoning_engine_adapter.py#L70), invalid method requests throw clean, user-safe `HTTP 404/500` status codes rather than leaking internal code traces.
 
 ---
 
 ## Tool Design
 
-The agent is equipped with two core simulated tools:
-*   `get_weather(query: str)`: Resolves meteorological queries for cities. It checks for specific keywords like `"sf"` or `"san francisco"` to serve simulated values, or defaults to a fallback weather statement.
-*   `get_current_time(query: str)`: Provides current timezone-accurate clock readings. The inputs are resolved to corresponding standard tz-identifiers (e.g. `America/Los_Angeles`) and evaluated locally.
+The agent is equipped with six core simulated business operations tools:
+*   `generate_business_plan(company_name, industry, target_audience)`: Formulates a structured markdown business outline.
+*   `generate_project_requirements(project_title, description, key_features)`: Compiles functional product requirement documents.
+*   `generate_user_stories(feature_name, goal)`: Drafts standard Agile user stories with acceptance criteria.
+*   `create_project_roadmap(project_name, duration_weeks)`: Outlines project phases across a defined timeline.
+*   `generate_documentation(module_name, code_snippet)`: Creates technical reference sheets.
+*   `analyze_business_risks(company_name, industry)`: Identifies operational, market, and compliance risks with mitigations.
 
 ---
 
@@ -87,11 +95,11 @@ Within this local environment, the Human-in-the-Loop flow resides inside Phase 3
 ## Demo Walkthrough
 
 We validated the setup against three distinct test cases inside the developer playground:
-1.  **SF Weather:** Asking *"What is the weather in SF?"* triggers `get_weather`. The agent returns `"It's 60 degrees and foggy."`.
-2.  **SF Current Time:** Asking *"What is the current time in SF?"* triggers `get_current_time` resolving America/Los_Angeles clock. The agent displays timezone-accurate current timestamps.
-3.  **Fallback Weather:** Asking *"Tell me the weather in Paris"* triggers `get_weather`. The agent returns the default weather string `"It's 90 degrees and sunny."`.
+1.  **Business Plan:** Requesting a plan for Acme Corp in the SaaS industry targeting developers triggers `generate_business_plan` to return a 5-part layout.
+2.  **E-commerce Roadmap:** Asking for a 6-week e-commerce storefront timeline invokes `create_project_roadmap` to output phased development tasks.
+3.  **Risk Analysis:** Querying risk parameters for Stripe in the payments sector triggers `analyze_business_risks` to compile operational and legal mitigations.
 
 ---
 
 ## Impact / Value Statement
-`sprintpilot-ai` provides a framework for scaling LLM capabilities with safe, localized tools. Organizations can integrate this architecture to build customer-facing service agents, smart calendar modules, and contextual weather alert workflows, leading to highly accurate, tool-verified responses while protecting data privacy via trace sanitization.
+`sprintpilot-ai` empowers startup founders, product managers, and agile engineering teams to accelerate plan scaffolding and requirement scoping. By automating template generation securely, companies save hours of administrative overhead and maintain consistency across development requirements, while guaranteeing data security through strict telemetry controls.
