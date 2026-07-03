@@ -32,7 +32,7 @@ make playground        # opens the interactive developer UI at http://localhost:
 
 ## Architecture Diagram
 
-The diagram below outlines the components of `sprintpilot-ai` and how requests flow through the application:
+The diagram below outlines the updated pipeline architecture of `sprintpilot-ai` and how requests flow through the application:
 
 ```mermaid
 graph TD
@@ -45,21 +45,39 @@ graph TD
         ADK -->|Root Agent Context| Agent[RootAgent]
     end
     
-    subgraph Agent Tools
-        Agent -->|Tool Execution| BizPlan[generate_business_plan]
-        Agent -->|Tool Execution| PRD[generate_project_requirements]
-        Agent -->|Tool Execution| Stories[generate_user_stories]
-        Agent -->|Tool Execution| Roadmap[create_project_roadmap]
-        Agent -->|Tool Execution| Doc[generate_documentation]
-        Agent -->|Tool Execution| Risk[analyze_business_risks]
+    subgraph Business Operations Pipeline
+        Agent -->|1. Create Outline| BizPlan[generate_business_plan]
+        BizPlan -->|2. Derive PRD JSON| PRD[generate_project_requirements]
+        PRD -->|3. Calculate Timeline JSON| Roadmap[create_project_roadmap]
+        Roadmap -->|4. Assess Registry JSON| Risk[analyze_business_risks]
+        Risk -->|5. Compile Markdown Doc| Doc[generate_documentation]
     end
-    
-    subgraph Observability
-        ADK -->|Telemetry & Tracing| OTel[OpenTelemetry & Cloud Logging]
+
+    subgraph Persistent Memory
+        Agent <-->|Session History| History[(Conversation Session Storage)]
+    end
+
+    subgraph Model Context Protocol (MCP)
+        Agent -->|File Access| MCPFilesystem[mcp_read_file / mcp_write_file]
+        Agent -->|Issue Tracker| MCPGithub[mcp_create_github_issue]
+        Agent -->|Cloud Docs| MCPGoogle[mcp_upload_to_drive / mcp_create_google_doc]
+        Agent -->|Scheduling| MCPCalendar[mcp_schedule_event]
     end
 ```
 
 ![Architecture Diagram](assets/architecture_diagram.png)
+
+---
+
+## Model Context Protocol (MCP) Integration
+
+The project includes an extensible Model Context Protocol client manager located at [app/app_utils/mcp_client.py](file:///c:/Users/Anshu%20Gupta/Desktop/adk-workspace/sprintpilot-ai/app/app_utils/mcp_client.py) supporting:
+*   **Filesystem:** Reads and writes workspace files (`MCP_FILESYSTEM_ENABLED`).
+*   **GitHub:** Integrates with issue trackers (`MCP_GITHUB_ENABLED`).
+*   **Google Drive & Google Docs:** Uploads documents and spreadsheets (`MCP_GDRIVE_ENABLED` & `MCP_GDOCS_ENABLED`).
+*   **Google Calendar:** Schedules project timeline events (`MCP_GCALENDAR_ENABLED`).
+
+All services are configured dynamically using environment variables, avoiding any hardcoded secrets.
 
 ---
 
@@ -73,22 +91,22 @@ You can run the project in two different modes:
 
 ## Sample Test Cases
 
-Here are 3 specific test cases you can execute in the local playground or web server:
+Here are 3 specific test cases you can execute in the local playground:
 
-### 1. Generating a Business Plan Outline
-*   **Input:** `"Can you generate a business plan for Acme Corp in the SaaS industry targeting developers?"`
-*   **Expected Behavior:** The `RootAgent` parses the request, invokes the `generate_business_plan` tool with the parameters `company_name="Acme Corp"`, `industry="SaaS"`, and `target_audience="developers"`, receives a structured business plan template, and returns it.
-*   **Check:** In the playground UI, you will see a tool call block for `generate_business_plan`. The final response will show the generated markdown business plan.
+### 1. End-to-End Business Operations Orchestration
+*   **Input:** `"I want to build a software development agency startup named DevSprint in the SaaS industry."`
+*   **Expected Behavior:** `RootAgent` identifies this as a fresh startup planning request. It triggers the planning sequence: `generate_business_plan` -> `generate_project_requirements` -> `create_project_roadmap` -> `analyze_business_risks` -> `generate_documentation` and outputs a single consolidated operations report.
+*   **Check:** The user sees a markdown report containing Executive Summary, README, SRS, Architecture, API details, and Meeting Notes. In the logs, all 5 tool runs appear in order.
 
-### 2. Creating a Project Roadmap
-*   **Input:** `"Create a 6-week project roadmap for my e-commerce storefront project."`
-*   **Expected Behavior:** The `RootAgent` invokes the `create_project_roadmap` tool with parameters `project_name="e-commerce storefront"` and `duration_weeks=6`. The tool computes phase timelines and returns the roadmap.
-*   **Check:** The UI displays the tool call logs for `create_project_roadmap` and shows a structured 6-week timeline with phases.
+### 2. Context-Aware Requirements Generation (Memory Validation)
+*   **Input:** (Direct follow-up to case 1 in same session) `"Now draft user stories for the platform onboarding flow."`
+*   **Expected Behavior:** `RootAgent` scans the session conversation history to extract `company_name="DevSprint"` and the SaaS industry requirements. It invokes `generate_user_stories(feature_name="platform onboarding flow", goal="SaaS user onboarding")`.
+*   **Check:** The user receives a detailed user stories document without having to re-provide company details or goals.
 
-### 3. Business Risk Analysis
-*   **Input:** `"Analyze business risks for Stripe in the payments space."`
-*   **Expected Behavior:** The `RootAgent` routes the request to the `analyze_business_risks` tool with `company_name="Stripe"` and `industry="payments"`. The tool returns a risk analysis report with mitigations.
-*   **Check:** The user sees the generated risk report listing market, operational, and compliance risks for Stripe.
+### 3. Extensible MCP Filesystem Check
+*   **Input:** `"Save the generated requirements doc to workspace file requirements.md."`
+*   **Expected Behavior:** `RootAgent` triggers the active MCP Filesystem tool `mcp_write_file` with the path `requirements.md` and the document text as content.
+*   **Check:** The workspace local filesystem has a new file `requirements.md` created with correct contents.
 
 ---
 
