@@ -1,36 +1,65 @@
-[0:00 - HOOK]
-When startup founders, ecommerce businesses, and software teams need to quickly plan and organize projects, manually drafting business plans, requirement sheets, and roadmaps creates massive administrative bottlenecks. That is why we built SprintPilot AI—an Autonomous Business Operations Assistant designed to automate and accelerate project planning, requirements mapping, and risk analysis.
+=============================================================================
+SPRINTPILOT AI — 5-MINUTE PRESENTATION & DEMO SCRIPT
+=============================================================================
 
-[0:20 - WHAT IT IS]
-(pause)
-At its core, SprintPilot AI is an intelligent operations agent implemented with the Google Agent Development Kit framework, running on top of Gemini. It operates as a modular assistant that exposes six specialized business tools to dynamically outline plans, user stories, roadmaps, and technical documentation.
+[0:00 - INTRODUCTION]
+Visual: Presenter on camera or showing SprintPilot AI title slide (cover_page_banner.png).
+Audio:
+"Hello everyone, and welcome to this demonstration of SprintPilot AI. My name is [Your Name], and I am the lead developer and designer behind this project. Today, I'm thrilled to walk you through how we are reimagining the way startup founders, product managers, and agile engineering teams transition from a raw business concept to full technical execution."
 
-[0:40 - SHOW THE BANNER]
-(show assets/cover_page_banner.png)
-Looking at the cover banner, SprintPilot AI emphasizes automated, secure, and intelligent project scaffolding. It helps teams align requirements, visualize timelines, and identify business risks instantly inside a secure execution environment.
+[0:30 - THE PROBLEM]
+Visual: Focus on the cover banner or a slide highlighting operational bottlenecks.
+Audio:
+"If you have ever tried to launch a startup, a SaaS platform, or an e-commerce brand, you know the early stages are plagued by administrative friction. You spend weeks manually drafting business outlines, converting those outlines into technical requirements (PRDs), writing User Stories with Acceptance Criteria, modeling epics, creating timelines, and compiling risk registries. 
 
-[1:00 - ARCHITECTURE]
-(show assets/architecture_diagram.png)
-Let us walk through the architecture of the system.
-First, user inputs go through the Security Checkpoint to sanitize parameter boundaries and prevent raw text exports in telemetry.
-Next, requests hit SprintPilot AI's RootAgent, which orchestrates six business operations tools.
-Depending on the goal, the RootAgent can trigger generate_business_plan to output market strategies, generate_project_requirements to compile product specs, or generate_user_stories to draft Agile user cases.
-It also uses create_project_roadmap to phase deliverables, generate_documentation to document codebase elements, and analyze_business_risks to evaluate industry compliance.
-Finally, execution traces are securely sent to Cloud Logging via OpenTelemetry collectors.
+This process is slow, fragmented, and suffers from huge translation gaps between business strategy and actual software engineering requirements."
 
-[2:00 - LIVE DEMO]
-(switch to playground at localhost:18081)
-(pause)
-Let us review a live interaction in the developer playground.
-If I submit the query "Can you generate a business plan for Acme Corp in the SaaS industry targeting developers?", the agent invokes the generate_business_plan tool, displaying a complete 5-part outline containing an Executive Summary, Market Analysis, and product roadmap milestones on screen.
-(pause)
-Next, let us ask "Create a 6-week project roadmap for my e-commerce storefront project." SprintPilot AI executes create_project_roadmap, outputting a clear, phased weekly schedule from initial setup to production release.
-(pause)
-Finally, if we request "Analyze business risks for Stripe in the payments space," the agent calls analyze_business_risks to identify market, operational, and telemetry leakage hazards along with custom mitigation strategies.
+[1:10 - THE SOLUTION]
+Visual: Show the running playground interface or visual dashboard components.
+Audio:
+"To solve this, we created SprintPilot AI—an Autonomous AI Business Operations Assistant. Unlike traditional, chatty bots that pause at every single step to ask you what to do next, SprintPilot AI operates as a fully autonomous workflow orchestrator. 
 
-[3:00 - SECURITY & MCP]
-(pause)
-Behind the scenes, security checkpoints sanitize input parameters and prevent telemetry data leaks, while each tool runs inside a clean local sandbox.
+You give it a raw business concept, and it will check for missing parameters like company name, industry, target customer segment, and budget. If anything is missing, it asks you up front. Once complete, it executes a seven-stage pipeline sequentially: planning the business model, writing requirements, drafting user stories, scheduling a weekly roadmap, conducting risk registry audits, formatting software documentation, and compiling a executive VC summary—returning the entire, unified report verbatim directly in your chat."
 
-[3:30 - IMPACT / CLOSE]
-SprintPilot AI enables modern product teams to save hours of administrative overhead, ensuring consistent requirements and clean codebases while protecting customer privacy. Thank you, and we are ready to scale business operations with SprintPilot AI.
+[2:00 - ARCHITECTURE WALKTHROUGH]
+Visual: Show assets/architecture_diagram.png.
+Audio:
+"Let's look at the underlying architecture that makes this possible. 
+
+SprintPilot AI is built natively using the Google Agent Development Kit (ADK) 2.0. When an idea is received by our FastAPI backend, it routes into our RootAgent orchestrator. 
+
+Rather than executing ad-hoc steps, the orchestrator triggers the `execute_business_planning_workflow` node. This launches a sequential pipeline of specialized agent tools: from business plan creation to functional PRD extraction, story building, roadmap scheduling, risk evaluation, and documentation compile. The results are gathered and delivered as a complete, unified markdown report. 
+
+Furthermore, the RootAgent is connected to Model Context Protocol (MCP) servers, allowing it to autonomously read/write local filesystem files, log GitHub issues, upload to Google Drive, draft Google Docs, and schedule calendar events directly from the generated project timeline."
+
+[3:00 - LIVE DEMO]
+Visual: Switch screen capture to the running ADK playground at http://localhost:18081.
+Audio:
+"Let's jump into the playground to see SprintPilot AI in action. 
+
+I'll submit the raw prompt: 'I want to build a software consultancy startup named DevSprint in the SaaS industry.'
+
+Immediately, the orchestrator notices that we didn't specify our budget or target audience. It prompts: 'To generate your complete Business Report, please provide the following missing details: target audience, budget.'
+
+I'll reply: 'Our target audience is enterprise software buyers, and our initial budget is fifty thousand dollars.'
+
+Now, watch the terminal logs. SprintPilot AI is executing the sequential pipeline, showing a live progress visualizer at each step. Emojis change from waiting to working to complete. 
+
+First, the Business Planner runs. Next, the Requirements Agent extracts the PRD. The User Stories builder drafts Scrum cards. The Roadmap scheduler timelines the epics. The Risk registry maps compliance. Finally, the Documentation builder formats the SRS, and the Executive summary compiles the strategic brief. 
+
+And there it is! A massive, beautifully formatted Operations Report printed verbatim directly in our chat, complete with markdown headers, milestone tables, and risk matrices. No truncation, no abbreviations, no manual steps."
+
+[4:15 - TECHNOLOGY & CORE INTEGRATION]
+Visual: Show code snippet of agent.py or config.py.
+Audio:
+"Behind the scenes, this application leverages Gemini 2.5 Flash Lite, which provides incredibly fast reasoning and robust free-tier request limits. 
+
+We have configured the project with strict security constraints: all telemetry message contents are sanitized to protect user privacy, and the business logic is modularly isolated within a clean `/app/tools` structure, fully compliant with the Google ADK 2.0 standards."
+
+[4:40 - FUTURE SCOPE & CONCLUSION]
+Visual: Return to the cover banner (cover_page_banner.png).
+Audio:
+"Looking ahead, we plan to extend SprintPilot AI with interactive timeline charts and multi-model consensus verification loops.
+
+SprintPilot AI bridges the gap between high-level vision and engineering execution, saving hundreds of hours of manual planning overhead. Thank you for your time, and we're ready to accelerate your business operations with SprintPilot AI!"
+=============================================================================
