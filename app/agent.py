@@ -18,6 +18,7 @@ import json
 from zoneinfo import ZoneInfo
 
 import app.config
+from app.app_utils.mcp_client import MCPClientManager
 from google import genai
 from google.adk.agents import Agent
 from google.adk.apps import App
@@ -429,6 +430,9 @@ def analyze_business_risks(company_name: str, industry: str) -> str:
         return json.dumps(fallback_data, indent=2)
 
 
+mcp_manager = MCPClientManager()
+
+
 root_agent = Agent(
     name="root_agent",
     model=Gemini(
@@ -470,7 +474,7 @@ root_agent = Agent(
         create_project_roadmap,
         generate_documentation,
         analyze_business_risks,
-    ],
+    ] + mcp_manager.get_all_enabled_tools(),
 )
 
 app = App(
