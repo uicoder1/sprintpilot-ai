@@ -17,7 +17,9 @@ import app.config
 from app.app_utils.mcp_client import MCPClientManager
 from app.tools import (
     analyze_business_risks,
+    create_executive_summary,
     create_project_roadmap,
+    execute_business_planning_workflow,
     generate_business_plan,
     generate_documentation,
     generate_project_requirements,
@@ -39,30 +41,20 @@ root_agent = Agent(
     instruction=(
         "You are SprintPilot AI, an Autonomous Business Operations Assistant designed to "
         "help startup founders, ecommerce businesses, and software teams plan, organize, "
-        "and execute their projects. "
-        "You have access to persistent conversation memory. Always review the previous turns of the "
-        "conversation history to locate any previously established context, including:\n"
-        "- Business Name\n"
-        "- Industry\n"
-        "- Previous Plans\n"
-        "- Requirements\n"
-        "- Roadmaps\n"
-        "- Generated Documents\n\n"
-        "When the user continues the conversation (e.g. asking to 'generate requirements' after "
-        "a business plan was already created, or asking to 'analyze risks' for the company), you MUST "
-        "automatically reuse the previous context from the history. Pass those details directly "
-        "as arguments into the relevant tools without asking the user to re-submit them.\n\n"
-        "When a user starts a fresh project and asks to plan, build, launch, or analyze a project/business "
-        "(for example, asking to 'build an ecommerce business' or 'create a developer startup'), you MUST "
-        "intelligently orchestrate the business planning tools in a sequence, rather than answering directly. "
-        "Follow this exact sequence of tool calls:\n"
-        "1. First, call 'generate_business_plan' to create the high-level business plan.\n"
-        "2. Next, call 'generate_project_requirements' by passing the generated business plan text output into it.\n"
-        "3. Next, call 'create_project_roadmap' by passing the generated requirements JSON into it.\n"
-        "4. Next, call 'analyze_business_risks' using the company name and industry context.\n"
-        "5. Next, call 'generate_documentation' by passing the outputs from the previous tools (business plan, requirements, roadmap, risk analysis) into its parameters.\n"
-        "6. Finally, present the consolidated markdown report returned by 'generate_documentation' directly to the user as the final response.\n\n"
-        "For general or follow-up queries, you may call specific individual tools as needed."
+        "and execute their projects.\n\n"
+        "PERSISTENT MEMORY:\n"
+        "You have access to persistent conversation memory. Always review previous conversation turns to locate "
+        "any established context, including Business Name, Industry, target customer segments, budget, and project roadmaps.\n\n"
+        "WORKFLOW ORCHESTRATION:\n"
+        "When the user requests to plan, build, launch, or analyze a business, startup, or product (e.g. 'build an ecommerce storefront' "
+        "or 'create a software consultancy startup'), you MUST execute the 'execute_business_planning_workflow' tool. "
+        "This tool autonomously manages the sequential execution of: business planning, functional requirements compilation, "
+        "user stories formatting, timeline/roadmap estimation, risk registry analysis, markdown documentation synthesis, and executive summaries.\n"
+        "Do NOT call these tools step-by-step or ask the user for confirmation after each tool call.\n"
+        "If any essential information (business name, industry, target audience, budget) is missing, the tool will notify you. "
+        "In that case, ask the user only for those missing details. Once the details are collected, re-run 'execute_business_planning_workflow' "
+        "to run the entire pipeline automatically and return the complete, unified Business Report.\n\n"
+        "For manual execution or individual queries, you may invoke specific individual tools as needed."
     ),
     tools=[
         generate_business_plan,
@@ -71,6 +63,8 @@ root_agent = Agent(
         create_project_roadmap,
         generate_documentation,
         analyze_business_risks,
+        create_executive_summary,
+        execute_business_planning_workflow,
     ] + mcp_manager.get_all_enabled_tools(),
 )
 
